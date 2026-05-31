@@ -10,10 +10,15 @@ Marital_Status_map = {'Divorced': 0, 'Married-AF-spouse': 1, 'Married-civ-spouse
 Occupation_map = {'Adm-clerical': 0, 'Armed-Forces': 1, 'Craft-repair': 2, 'Exec-managerial': 3, 'Farming-fishing': 4, 'Handlers-cleaners': 5, 'Machine-op-inspct': 6, 'Other-service': 7, 'Priv-house-serv': 8, 'Prof-specialty': 9, 'Protective-serv': 10, 'Sales': 11, 'Tech-support': 12, 'Transport-moving': 13}
 Sex_map = {'Female': 0, 'Male': 1}
 Income_map = {'<=50K': 0, '>50K': 1}
+image_url = "https://miro.medium.com/v2/resize:fit:1200/0*hpFoHzWYliOkGrOO.jpg"
+
 
 def main():
-    st.title("Income Prediction")
-    st.image("https://miro.medium.com/v2/resize:fit:1200/0*hpFoHzWYliOkGrOO.jpg", width=800)
+    st.title("Income Prediction", text_alignment="center")
+    st.markdown(
+        f'<img src="{image_url}" style="width:800px; height:350px; object-fit:cover;">',
+        unsafe_allow_html=True
+    )
 
     with st.form("input_form"):
         col1, col2 = st.columns(2)
@@ -21,14 +26,16 @@ def main():
             age = st.slider('Age', min_value=15, max_value=100, value=30, step=1)
             workclass = st.selectbox('Workclass', options=list(Workclass_map.keys()))
             education = st.selectbox('Education', options=list(Education_map.keys()))
-            maritalStatus = st.selectbox('Workclass', options=list(Marital_Status_map.keys()))
+            maritalStatus = st.selectbox('Marital Status', options=list(Marital_Status_map.keys()))
             occupation = st.selectbox('Occupation', options=list(Occupation_map.keys()))
         with col2:
             sex = st.radio("Sex", options=list(Sex_map.keys()))
             capitalGain = st.number_input('Capital Gain (USD)', min_value=0, max_value=100000, value=1000, step=1)
             capitalLoss = st.number_input('Capital Loss (USD)', min_value=0, max_value=4500, value=100, step=1)
             hoursPerWeek = st.number_input('Work Hours / Week', min_value=0, max_value=100, value=40, step=1)
-        submitted = st.form_submit_button("Predict Income")
+        lcol1, lcol2, lcol3 = st.columns([2, 1, 2])
+        with lcol2:
+            submitted = st.form_submit_button("Predict Income")
     if submitted:
         input_data = np.array([[age, Workclass_map[workclass], Education_map[education], Marital_Status_map[maritalStatus], Occupation_map[occupation], 
                                 Sex_map[sex], capitalGain, capitalLoss, hoursPerWeek]])
